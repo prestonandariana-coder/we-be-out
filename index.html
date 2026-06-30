@@ -243,7 +243,7 @@
   .badge.later{background:rgba(210,4,45,.10); color:var(--blue-deep);}
   .badge.upcoming{background:rgba(134,134,139,.12); color:var(--slate);}
   .card-desc{font-size:.94rem; color:#3C3C43; margin-top:10px; line-height:1.5; font-weight:500;}
-  .card-time{font-family:var(--font-mono); font-size:.82rem; font-weight:700; color:var(--ink); margin-top:12px;}
+  .card-time{font-family:var(--font-display); font-size:.82rem; font-weight:700; color:var(--ink); margin-top:12px;}
   .card-addr{font-size:.8rem; color:var(--slate); margin-top:3px;}
 
   /* ---------- Admin review cards ---------- */
@@ -769,7 +769,7 @@
         <input type="email" placeholder="you@email.com" id="newsletterEmail" required aria-label="Email for newsletter" />
         <button type="submit">Join</button>
       </form>
-      <p class="footer-newsletter-note">One email a week, max. Chicago deals only — no spam.</p>
+      <p class="footer-newsletter-note">Get curated deals and offers in your inbox.</p>
     </div>
   </div>
   <div class="footer-bottom">
@@ -792,21 +792,23 @@
      venue. Add more real spots with the "+ Add a deal" button.
      ========================================================= */
   const NEIGHBORHOODS = [
-    { name: 'West Loop',    lat: 41.8853, lng: -87.6485, grad: ['#FF2D78','#FF8A00'] },
-    { name: 'Wicker Park',  lat: 41.9088, lng: -87.6796, grad: ['#AF52DE','#0A84FF'] },
-    { name: 'The Loop',     lat: 41.8819, lng: -87.6278, grad: ['#0A84FF','#28C76F'] },
-    { name: 'River North',  lat: 41.8919, lng: -87.6346, grad: ['#FF8A00','#FFD60A'] },
-    { name: 'Lincoln Park', lat: 41.9214, lng: -87.6513, grad: ['#28C76F','#0A84FF'] },
-    { name: 'Lakeview',     lat: 41.9434, lng: -87.6541, grad: ['#FF2D78','#AF52DE'] },
-    { name: 'Logan Square', lat: 41.9289, lng: -87.7077, grad: ['#0066D6','#AF52DE'] },
-    { name: 'Bucktown',     lat: 41.9180, lng: -87.6850, grad: ['#FF9F0A','#FF2D78'] },
-    { name: 'South Loop',   lat: 41.8625, lng: -87.6291, grad: ['#28C76F','#FFD60A'] },
-    { name: 'Pilsen',       lat: 41.8564, lng: -87.6624, grad: ['#D6005C','#FF8A00'] },
+    { name: 'West Loop',      lat: 41.8853, lng: -87.6485, grad: ['#FF2D78','#FF8A00'] },
+    { name: 'Fulton Market',  lat: 41.8866, lng: -87.6490, grad: ['#D2042D','#450011'] },
+    { name: 'Wicker Park',    lat: 41.9088, lng: -87.6796, grad: ['#AF52DE','#0A84FF'] },
+    { name: 'The Loop',       lat: 41.8819, lng: -87.6278, grad: ['#0A84FF','#28C76F'] },
+    { name: 'River North',    lat: 41.8919, lng: -87.6346, grad: ['#FF8A00','#FFD60A'] },
+    { name: 'Lincoln Park',   lat: 41.9214, lng: -87.6513, grad: ['#28C76F','#0A84FF'] },
+    { name: 'Lakeview',       lat: 41.9434, lng: -87.6541, grad: ['#FF2D78','#AF52DE'] },
+    { name: 'Logan Square',   lat: 41.9289, lng: -87.7077, grad: ['#0066D6','#AF52DE'] },
+    { name: 'Bucktown',       lat: 41.9180, lng: -87.6850, grad: ['#FF9F0A','#FF2D78'] },
+    { name: 'South Loop',     lat: 41.8625, lng: -87.6291, grad: ['#28C76F','#FFD60A'] },
+    { name: 'Pilsen',         lat: 41.8564, lng: -87.6624, grad: ['#D6005C','#FF8A00'] },
   ];
 
   const CUISINES = [
     'American', 'Pizza', 'Mexican', 'Italian', 'Cocktail bar',
-    'Sports bar', 'Rooftop', 'Seafood', 'Beer-focused', 'Wine bar'
+    'Sports bar', 'Rooftop', 'Seafood', 'Beer-focused', 'Wine bar',
+    'Tacos', 'Gastropub'
   ];
 
   const SEED_VENUES = [
@@ -837,7 +839,69 @@
       cuisines: ['Rooftop', 'American', 'Cocktail bar'],
       deals: [{ type: 'both', days: [1,2,3], start: '16:00', end: '18:00',
         desc: 'Rooftop happy hour overlooking Millennium Park — discounted cocktails and bites' }]
-    }
+    },
+    // ── West Loop ────────────────────────────────────────────
+    {
+      id: 'bandit-wl', name: 'Bandit', neighborhood: 'West Loop',
+      zip: '60607', address: '841 W Randolph St', lat: 41.8841, lng: -87.6494,
+      cuisines: ['American', 'Cocktail bar'],
+      deals: [{ type: 'both', days: [1,2,3,4,5], start: '16:00', end: '18:00',
+        desc: '$8 craft cocktails, $8 bar bites — polished-casual neighborhood bar on Randolph' }]
+    },
+    {
+      id: 'recess-wl', name: 'Recess', neighborhood: 'West Loop',
+      zip: '60642', address: '838 W Kinzie St', lat: 41.8896, lng: -87.6501,
+      cuisines: ['American', 'Cocktail bar'],
+      deals: [{ type: 'both', days: [2,3,4], start: '16:00', end: '18:00',
+        desc: '$10 craft cocktails, half-off draft beers, half-off apps, $4 cheeseburger sliders' }]
+    },
+    {
+      id: 'press-room-wl', name: 'The Press Room', neighborhood: 'West Loop',
+      zip: '60607', address: '1134 W Washington Blvd', lat: 41.8830, lng: -87.6584,
+      cuisines: ['Wine bar', 'Cocktail bar', 'Seafood'],
+      deals: [{ type: 'both', days: [2,3,4], start: '16:00', end: '18:00',
+        desc: '$2 oysters, $8 martinis & old fashioneds, $10 specialty wines, $45 dozen oysters + sparkling bottle' }]
+    },
+    {
+      id: 'asadito-wl', name: 'Asadito', neighborhood: 'West Loop',
+      zip: '60661', address: '30 N Clinton St', lat: 41.8818, lng: -87.6415,
+      cuisines: ['Mexican', 'Tacos', 'Cocktail bar'],
+      deals: [{ type: 'both', days: [2,3,4,5], start: '12:00', end: '14:00',
+        desc: '$6 house margaritas, $5 tap beers — plus Tequila Tuesdays, Pitcher Wednesdays ($30 pitchers), Thirsty Thursdays ($8 palomas)' }]
+    },
+    // ── Fulton Market ─────────────────────────────────────────
+    {
+      id: 'federales-fm', name: 'Federales', neighborhood: 'Fulton Market',
+      zip: '60607', address: '180 N Morgan St', lat: 41.8862, lng: -87.6517,
+      cuisines: ['Mexican', 'Tacos', 'Cocktail bar'],
+      deals: [
+        { type: 'both', days: [1,2,3,4,5], start: '16:00', end: '18:00',
+          desc: '$9 margaritas, $20 select beer buckets, $9 taquitos, $8 queso blanco, $12 nachos — lively open-air patio with retractable roof' },
+        { type: 'both', days: [6], start: '11:00', end: '13:00',
+          desc: 'Saturday brunch happy hour: $9 margaritas, $20 beer buckets, $9 taquitos' }
+      ]
+    },
+    {
+      id: 'beatrix-fm', name: 'Beatrix', neighborhood: 'Fulton Market',
+      zip: '60607', address: '834 W Fulton Market', lat: 41.8867, lng: -87.6495,
+      cuisines: ['American', 'Cocktail bar'],
+      deals: [{ type: 'both', days: [1,2,3,4,5], start: '15:00', end: '18:00',
+        desc: '$6 local beers, $7 select wines, $8 hand-crafted cocktails, $9 snacks, $12 prime or mushroom quinoa burger. Half-off wine bottles all day Monday.' }]
+    },
+    {
+      id: 'publican-fm', name: 'The Publican', neighborhood: 'Fulton Market',
+      zip: '60607', address: '837 W Fulton Market', lat: 41.8866, lng: -87.6494,
+      cuisines: ['Beer-focused', 'American', 'Gastropub', 'Seafood'],
+      deals: [{ type: 'both', days: [1,2,3,4,5], start: '16:00', end: '18:00',
+        desc: '$2 oysters, $8-$10 beers, $10 wine, $12 martinis, $9 beef fat fries, $8 pork rinds, $10 stuffed chicken wings — classic Fulton Market beer hall' }]
+    },
+    {
+      id: 'ramen-san-fm', name: 'Ramen-san Fulton Market', neighborhood: 'Fulton Market',
+      zip: '60607', address: '941 W Fulton Market', lat: 41.8866, lng: -87.6542,
+      cuisines: ['Italian', 'Beer-focused'],
+      deals: [{ type: 'both', days: [1,2,3,4,5], start: '15:00', end: '18:00',
+        desc: '$5 Asahi cold draft, $6 cold dry sake, $7 Penicillin #2 cocktail, $4 fried chicken bun, $5 roasted shishitos, $6 karaage chicken nuggets' }]
+    },
   ];
 
   const DAY_NAMES = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
