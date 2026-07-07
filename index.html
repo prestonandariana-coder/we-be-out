@@ -1451,10 +1451,54 @@
   });
 
   /* ---------- Newsletter form (footer) ---------- */
-  document.getElementById('newsletterForm').addEventListener('submit', (e) => {
+  document.getElementById('newsletterForm').addEventListener('submit', async (e) => {
     e.preventDefault();
-    showToast("You're on the list!");
-    e.target.reset();
+    const email = document.getElementById('newsletterEmail').value.trim();
+    if (!email) return;
+
+    // ─── Beehiiv API credentials ───────────────────────────────────
+    // PASTE YOUR NEW API KEY BELOW (replace the placeholder text only,
+    // keep the quotes). Do not share this key publicly.
+    const BEEHIIV_API_KEY = 'TbeUHPvcDsMfqpZOGrM0kowrtJExsMzIWjt5K9Ij6riBRgTyCNKIJ7ru8tA48VZ2';
+    const BEEHIIV_PUB_ID  = 'pub_84f4480c-9757-4356-b520-2aaaea7741a8';
+    // ───────────────────────────────────────────────────────────────
+
+    const btn = e.target.querySelector('button[type="submit"]');
+    const original = btn.textContent;
+    btn.textContent = '...';
+    btn.disabled = true;
+
+    try {
+      const res = await fetch(
+        `https://api.beehiiv.com/v2/publications/${BEEHIIV_PUB_ID}/subscriptions`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${BEEHIIV_API_KEY}`
+          },
+          body: JSON.stringify({
+            email,
+            reactivate_existing: false,
+            send_welcome_email: true,
+            utm_source: 'webeout.app',
+            utm_medium: 'website',
+            utm_campaign: 'footer_signup'
+          })
+        }
+      );
+      if (res.ok || res.status === 201) {
+        showToast("You're on the list! Check your inbox to confirm.");
+        e.target.reset();
+      } else {
+        showToast("Something went wrong — try again in a moment.");
+      }
+    } catch (err) {
+      showToast("Couldn't connect — check your connection and try again.");
+    } finally {
+      btn.textContent = original;
+      btn.disabled = false;
+    }
   });
 
   /* =========================================================
