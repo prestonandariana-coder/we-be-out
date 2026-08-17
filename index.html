@@ -517,9 +517,6 @@
     <button class="nav-link" data-route="map">Map</button>
   </div>
   <div class="nav-item">
-    <button class="nav-link" data-route="blog">Blog</button>
-  </div>
-  <div class="nav-item">
     <button class="nav-link" data-route="contact">Contact</button>
   </div>
 </nav>
@@ -755,7 +752,6 @@
     <div class="footer-col">
       <h4>Explore</h4>
       <a data-route="map">Map</a>
-      <a data-route="blog">Blog</a>
       <a data-route="contact">Contact</a>
     </div>
     <div class="footer-col">
@@ -1385,7 +1381,7 @@
      pages (shareable URLs, back/forward support) while staying
      one file. Routes: map, blog, contact, privacy, disclaimer.
      ========================================================= */
-  const VALID_ROUTES = ['map','blog','contact','privacy','disclaimer','nrbackoffice2026'];
+  const VALID_ROUTES = ['map','contact','privacy','disclaimer','nrbackoffice2026'];
 
   function goToRoute(route){
     location.hash = VALID_ROUTES.includes(route) ? `#${route}` : '#map';
