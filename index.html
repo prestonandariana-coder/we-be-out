@@ -649,17 +649,47 @@
 <!-- ========== PRIVACY POLICY PAGE ========== -->
 <section class="page" id="page-privacy">
   <div class="page-head">
-    <h1>Privacy policy</h1>
-    <p>Last updated June 2026. This is placeholder MVP copy — swap in your real policy before public launch.</p>
+    <h1>Privacy Policy</h1>
+    <p>Last updated August 21, 2026.</p>
   </div>
   <div class="contact-wrap">
     <div style="background:#fff; border-radius:var(--radius-md); padding:24px 28px; box-shadow:var(--shadow-sm);">
-      <p style="line-height:1.7; color:#3C3C43; font-size:.95rem; margin:0;">
-        We Be Out collects only what's needed to run the site: deal submissions you choose to add, and the email
-        address you provide if you sign up for the newsletter. We don't sell personal information to third parties.
-        Map and deal data submitted through the "Add a deal" form is shown publicly to all visitors. If you'd like
-        something removed, reach out through the Contact page.
-      </p>
+      <div style="line-height:1.7; color:#3C3C43; font-size:.95rem;">
+
+        <p style="margin:0 0 20px;">
+          We Be Out ("we," "us") runs webeout.app, a map of happy hour and food &amp; drink specials in Chicago.
+          This page explains what information we collect, how we use it, and the choices you have. We built this
+          site to be simple and low-data by design — we don't require an account, and we don't run ads or
+          third-party trackers.
+        </p>
+
+        <h3 style="font-family:var(--font-display); font-weight:800; font-size:1.05rem; margin:0 0 8px;">Information we collect</h3>
+        <p style="margin:0 0 8px;"><strong>Deal submissions.</strong> When you use "Add a Deal," we collect the bar or restaurant details you enter (name, address, neighborhood, cuisine, deal times, and description). We don't ask for your name or contact info to submit a deal. Submissions are reviewed before they're published to the public map.</p>
+        <p style="margin:0 0 8px;"><strong>Newsletter.</strong> If you subscribe using the footer form, we collect your email address and pass it to Mailchimp, our email provider, to send you updates. You can unsubscribe at any time using the link in any newsletter email.</p>
+        <p style="margin:0 0 20px;"><strong>Contact form.</strong> If you message us through the Contact page, we collect your name, email, and message so we can respond.</p>
+
+        <h3 style="font-family:var(--font-display); font-weight:800; font-size:1.05rem; margin:0 0 8px;">Third-party services</h3>
+        <p style="margin:0 0 20px;">
+          The site loads map tiles from OpenStreetMap/CARTO, fonts from Google Fonts, and (as noted above) uses
+          Mailchimp for newsletter delivery and Netlify for hosting. Each of these services may receive standard
+          technical information — like your IP address and browser type — as part of loading the page, under their
+          own privacy policies. We don't use analytics or advertising trackers.
+        </p>
+
+        <h3 style="font-family:var(--font-display); font-weight:800; font-size:1.05rem; margin:0 0 8px;">How we use your information</h3>
+        <p style="margin:0 0 20px;">
+          We use the information above only to run the site: reviewing and publishing deal submissions, sending
+          newsletter emails to subscribers, and replying to messages. We don't sell personal information to
+          anyone.
+        </p>
+
+        <h3 style="font-family:var(--font-display); font-weight:800; font-size:1.05rem; margin:0 0 8px;">Your choices</h3>
+        <p style="margin:0;">
+          To unsubscribe from the newsletter, use the link in any email. To ask us to remove a deal submission or
+          any other information, reach out through the <a href="#" data-route="contact" style="color:var(--blue); font-weight:700;">Contact page</a> — we read every message.
+        </p>
+
+      </div>
     </div>
   </div>
 </section>
@@ -820,7 +850,7 @@
     </div>
     <div class="footer-col">
       <h4>Legal</h4>
-      <a data-route="privacy">Privacy policy</a>
+      <a data-route="privacy">Privacy Policy</a>
       <a data-route="disclaimer">Disclaimer</a>
     </div>
     <div class="footer-col footer-newsletter">
@@ -835,7 +865,7 @@
   <div class="footer-bottom">
     <span id="footerCount"></span>
     <div class="footer-legal">
-      <a data-route="privacy">Privacy policy</a>
+      <a data-route="privacy">Privacy Policy</a>
       <a data-route="disclaimer">Disclaimer</a>
       <span>© 2026 We Be Out</span>
     </div>
@@ -1500,18 +1530,24 @@
 
   /* =========================================================
      ROUTER
-     Simple hash-based router so the site behaves like separate
-     pages (shareable URLs, back/forward support) while staying
-     one file. Routes: map, blog, contact, privacy, disclaimer.
+     Simple path-based router (History API) so the site behaves
+     like separate pages (shareable URLs, back/forward support)
+     while staying one file. Routes: map, blog, contact, privacy,
+     disclaimer. Requires a host-level SPA fallback (see
+     _redirects) so a direct visit/refresh on e.g. /contact still
+     serves this file instead of 404ing.
      ========================================================= */
   const VALID_ROUTES = ['map','contact','privacy','disclaimer','nrbackoffice2026'];
 
   function goToRoute(route){
-    location.hash = VALID_ROUTES.includes(route) ? `#${route}` : '#map';
+    const finalRoute = VALID_ROUTES.includes(route) ? route : 'map';
+    const path = `/${finalRoute}`;
+    if (location.pathname !== path) history.pushState(null, '', path);
+    renderRoute();
   }
 
   function renderRoute(){
-    const raw = location.hash.replace('#','');
+    const raw = location.pathname.replace(/^\/|\/$/g, '');
     const finalRoute = VALID_ROUTES.includes(raw) ? raw : 'map';
 
     document.querySelectorAll('.page').forEach(p => p.classList.remove('current'));
@@ -1538,7 +1574,7 @@
     window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
   }
 
-  window.addEventListener('hashchange', renderRoute);
+  window.addEventListener('popstate', renderRoute);
 
   document.querySelectorAll('[data-route]').forEach(el => {
     el.addEventListener('click', (e) => {
