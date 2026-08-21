@@ -198,7 +198,7 @@
     background:none; border:none; color:var(--blue); font-weight:700; font-size:.82rem;
     cursor:pointer; font-family:var(--font-display); padding:8px 6px;
   }
-  .results-count{font-family:var(--font-mono); font-size:.8rem; font-weight:600; color:rgba(255,255,255,.75); white-space:nowrap;}
+  .results-count{font-family:var(--font-body); font-size:.8rem; font-weight:600; color:rgba(255,255,255,.75); white-space:nowrap;}
 
   @media (min-width:680px){
     .filter-bar{padding:14px 24px;}
@@ -329,6 +329,48 @@
     color:var(--ink);
   }
   .btn-primary:focus-visible, .btn-secondary:focus-visible{outline:2px solid var(--blue); outline-offset:2px;}
+
+  /* ---------- Venue detail modal ---------- */
+  .venue-modal{padding:0; overflow:hidden;}
+  .venue-modal .vm-map{
+    position:relative; height:180px; background:var(--surface);
+  }
+  .venue-modal .vm-map .leaflet-container{background:var(--surface); cursor:default;}
+  .venue-modal .vm-close{
+    position:absolute; top:14px; right:14px; z-index:500; width:34px; height:34px; border-radius:50%;
+    background:rgba(29,29,31,.55); backdrop-filter:blur(6px); border:none; color:#fff; font-size:1.1rem;
+    display:flex; align-items:center; justify-content:center; cursor:pointer; line-height:1;
+  }
+  .venue-modal .vm-close:hover{background:rgba(29,29,31,.75);}
+  .venue-modal .vm-body{padding:22px 24px 26px;}
+  .venue-modal .vm-top{display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:6px;}
+  .venue-modal h2{font-family:var(--font-display); font-weight:800; margin:0; font-size:1.5rem; letter-spacing:-.02em; line-height:1.15;}
+  .venue-modal .vm-nb{color:var(--slate); font-size:.9rem; font-weight:600; margin:4px 0 14px;}
+  .venue-modal .vm-tags{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:16px;}
+  .venue-modal .vm-tag{
+    background:var(--surface); color:var(--ink); font-size:.78rem; font-weight:700;
+    padding:6px 12px; border-radius:var(--radius-pill);
+  }
+  .venue-modal .vm-addr-row{
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+    padding:12px 14px; background:var(--surface); border-radius:var(--radius-sm); margin-bottom:18px;
+  }
+  .venue-modal .vm-addr{font-size:.88rem; color:var(--ink); font-weight:600;}
+  .venue-modal .vm-directions{
+    font-size:.8rem; font-weight:800; color:var(--blue); text-decoration:none; white-space:nowrap;
+    font-family:var(--font-display);
+  }
+  .venue-modal .vm-deals-label{
+    font-size:.78rem; font-weight:800; letter-spacing:.04em; text-transform:uppercase; color:var(--slate);
+    margin:0 0 10px;
+  }
+  .venue-modal .vm-deal{
+    border-radius:var(--radius-sm); padding:14px 16px; margin-bottom:10px; background:var(--surface);
+  }
+  .venue-modal .vm-deal.live{background:rgba(255,59,48,.08); box-shadow:inset 0 0 0 1.5px rgba(255,59,48,.35);}
+  .venue-modal .vm-deal-top{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:6px;}
+  .venue-modal .vm-deal-time{font-family:var(--font-mono); font-size:.8rem; font-weight:700; color:var(--ink);}
+  .venue-modal .vm-deal-desc{font-size:.87rem; color:var(--ink); line-height:1.5; font-weight:500; margin:0;}
 
   /* ---------- Toast ---------- */
   .toast{
@@ -663,6 +705,28 @@
     <div id="pendingList"></div>
   </div>
 </section>
+
+<div class="modal-overlay hidden" id="venueModalOverlay">
+  <div class="modal venue-modal" role="dialog" aria-labelledby="vmTitle" aria-modal="true">
+    <div class="vm-map" id="vmMap">
+      <button class="vm-close" id="vmClose" aria-label="Close">&times;</button>
+    </div>
+    <div class="vm-body">
+      <div class="vm-top">
+        <h2 id="vmTitle"></h2>
+        <span class="badge" id="vmBadge"></span>
+      </div>
+      <div class="vm-nb" id="vmNb"></div>
+      <div class="vm-tags" id="vmTags"></div>
+      <div class="vm-addr-row">
+        <span class="vm-addr" id="vmAddr"></span>
+        <a class="vm-directions" id="vmDirections" href="#" target="_blank" rel="noopener">Directions →</a>
+      </div>
+      <p class="vm-deals-label">Happy hour &amp; specials</p>
+      <div id="vmDeals"></div>
+    </div>
+  </div>
+</div>
 
 <div class="modal-overlay hidden" id="modalOverlay">
   <div class="modal" role="dialog" aria-labelledby="modalTitle" aria-modal="true">
@@ -1208,8 +1272,7 @@
     markersById = {};
     visible.forEach(({ v, status }) => {
       const marker = L.marker([v.lat, v.lng], { icon: pinIcon(status.state) });
-      marker.bindPopup(`<b>${v.name}</b><br>${v.neighborhood} · ${v.address}<br>${status.text}`);
-      marker.on('click', () => selectVenue(v.id, false));
+      marker.on('click', () => selectVenue(v.id));
       marker.addTo(markersLayer);
       markersById[v.id] = marker;
     });
@@ -1246,28 +1309,88 @@
         <div class="card-time">${status.text}</div>
         <div class="card-addr">${v.address}</div>
       `;
-      card.addEventListener('click', () => selectVenue(v.id, true));
-      card.addEventListener('keydown', e => { if (e.key === 'Enter') selectVenue(v.id, true); });
+      card.addEventListener('click', () => selectVenue(v.id));
+      card.addEventListener('keydown', e => { if (e.key === 'Enter') selectVenue(v.id); });
       list.appendChild(card);
     });
   }
 
-  function selectVenue(id, fromCard){
+  function selectVenue(id){
     document.querySelectorAll('.card.active').forEach(c => c.classList.remove('active'));
     const card = document.getElementById(`card-${id}`);
-    if (card){
-      card.classList.add('active');
-      if (!fromCard) card.scrollIntoView({ behavior:'smooth', block:'nearest' });
-    }
-    const marker = markersById[id];
-    if (marker){
-      if (!fromCard) marker.openPopup();
-      else {
-        map.flyTo(marker.getLatLng(), Math.max(map.getZoom(), 14), { duration: 0.5 });
-        marker.openPopup();
-      }
-    }
+    if (card) card.classList.add('active');
+    openVenueModal(id);
   }
+
+  /* =========================================================
+     VENUE DETAIL MODAL
+     Opens a bottom-sheet with a small static-feeling map snapshot
+     plus the venue's full info — instead of yanking the main map
+     to a new position on every card click.
+     ========================================================= */
+  let vmMapInstance = null;
+  function getVmMap(){
+    if (vmMapInstance) return vmMapInstance;
+    vmMapInstance = L.map('vmMap', {
+      zoomControl: false, attributionControl: false, dragging: false,
+      scrollWheelZoom: false, doubleClickZoom: false, boxZoom: false,
+      touchZoom: false, keyboard: false, tap: false
+    });
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      maxZoom: 19
+    }).addTo(vmMapInstance);
+    return vmMapInstance;
+  }
+
+  function openVenueModal(id){
+    const venue = venues.find(v => v.id === id);
+    if (!venue) return;
+    const chiNow = getChicagoNow();
+    const status = venueStatus(venue, chiNow);
+
+    document.getElementById('vmTitle').textContent = venue.name;
+    const badge = document.getElementById('vmBadge');
+    badge.textContent = status.state.toUpperCase();
+    badge.className = `badge ${status.state}`;
+    document.getElementById('vmNb').textContent = `${venue.neighborhood} · ${venue.zip}`;
+    document.getElementById('vmAddr').textContent = venue.address;
+    document.getElementById('vmDirections').href =
+      `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(venue.address + ' Chicago, IL')}`;
+
+    document.getElementById('vmTags').innerHTML = (venue.cuisines || [])
+      .map(c => `<span class="vm-tag">${c}</span>`).join('');
+
+    document.getElementById('vmDeals').innerHTML = venue.deals.map(deal => {
+      const st = dealStatus(deal, chiNow);
+      const dayLabels = deal.days.map(d => DAY_NAMES[d]).join(', ');
+      return `
+        <div class="vm-deal ${st.state === 'live' ? 'live' : ''}">
+          <div class="vm-deal-top">
+            <span class="vm-deal-time">${dayLabels} · ${fmtTime(deal.start)}–${fmtTime(deal.end)}</span>
+            ${st.state === 'live' ? '<span class="badge live">LIVE</span>' : ''}
+          </div>
+          <p class="vm-deal-desc">${deal.desc}</p>
+        </div>
+      `;
+    }).join('');
+
+    document.getElementById('venueModalOverlay').classList.remove('hidden');
+    const vmap = getVmMap();
+    setTimeout(() => {
+      vmap.invalidateSize();
+      vmap.setView([venue.lat, venue.lng], 16);
+      if (vmMarker) vmap.removeLayer(vmMarker);
+      vmMarker = L.marker([venue.lat, venue.lng], { icon: pinIcon(status.state) }).addTo(vmap);
+    }, 30);
+  }
+  let vmMarker = null;
+  function closeVenueModal(){
+    document.getElementById('venueModalOverlay').classList.add('hidden');
+  }
+  document.getElementById('vmClose').addEventListener('click', closeVenueModal);
+  document.getElementById('venueModalOverlay').addEventListener('click', e => {
+    if (e.target.id === 'venueModalOverlay') closeVenueModal();
+  });
 
   /* =========================================================
      WIRE UP CONTROLS
