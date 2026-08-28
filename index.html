@@ -1142,10 +1142,15 @@
 
   /* =========================================================
      MAP
+     CARTO's basemap tiles require a free API key as of 2026
+     (carto.com/basemaps/apikey) — 5M tile requests/month, no
+     account needed.
      ========================================================= */
+  const CARTO_TILE_URL = 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png?key=cb1_2ex9_1_53f316c1f74d8716484984a5';
+
   function initMap(){
     map = L.map('map', { zoomControl: true }).setView([41.8855, -87.6500], 12);
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    L.tileLayer(CARTO_TILE_URL, {
       attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
       maxZoom: 19
     }).addTo(map);
@@ -1366,7 +1371,7 @@
       scrollWheelZoom: false, doubleClickZoom: false, boxZoom: false,
       touchZoom: false, keyboard: false, tap: false
     });
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    L.tileLayer(CARTO_TILE_URL, {
       maxZoom: 19
     }).addTo(vmMapInstance);
     return vmMapInstance;
