@@ -768,26 +768,31 @@
   <div class="modal" role="dialog" aria-labelledby="modalTitle" aria-modal="true">
     <h2 id="modalTitle">Add a Deal</h2>
     <p class="sub">Know a spot with a happy hour or special that's missing? Add it below and we'll get it on the map.</p>
-    <form id="addForm">
+    <form id="addForm" name="add-deal" method="POST" data-netlify="true" data-netlify-honeypot="bot-field">
+      <input type="hidden" name="form-name" value="add-deal" />
+      <p style="position:absolute; left:-9999px;" aria-hidden="true">
+        <label>Leave this field blank: <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
+      </p>
+      <input type="hidden" name="days" id="f-days-hidden" />
       <div class="field">
         <label for="f-name">Bar or Restaurant Name</label>
-        <input id="f-name" required />
+        <input id="f-name" name="restaurant_name" required />
       </div>
       <div class="field">
         <label for="f-neighborhood">Neighborhood</label>
-        <select id="f-neighborhood" required></select>
+        <select id="f-neighborhood" name="neighborhood" required></select>
       </div>
       <div class="field">
         <label for="f-address">Address</label>
-        <input id="f-address" placeholder="e.g. 1962 N Damen Ave" required />
+        <input id="f-address" name="address" placeholder="e.g. 1962 N Damen Ave" required />
       </div>
       <div class="field">
         <label for="f-zip">ZIP Code</label>
-        <input id="f-zip" inputmode="numeric" pattern="[0-9]{5}" placeholder="60647" required />
+        <input id="f-zip" name="zip" inputmode="numeric" pattern="[0-9]{5}" placeholder="60647" required />
       </div>
       <div class="field">
         <label for="f-type">Deal Type</label>
-        <select id="f-type">
+        <select id="f-type" name="deal_type">
           <option value="drinks">Drinks</option>
           <option value="food">Food</option>
           <option value="both" selected>Food &amp; drinks</option>
@@ -795,7 +800,7 @@
       </div>
       <div class="field">
         <label for="f-cuisine">Cuisine/Type</label>
-        <select id="f-cuisine" multiple style="min-height:96px;"></select>
+        <select id="f-cuisine" name="cuisines" multiple style="min-height:96px;"></select>
         <div class="field-hint">Cmd/Ctrl-click to select more than one.</div>
       </div>
       <div class="field">
@@ -813,16 +818,16 @@
       <div class="time-row">
         <div class="field">
           <label for="f-start">Starts</label>
-          <input id="f-start" type="time" required />
+          <input id="f-start" name="start_time" type="time" required />
         </div>
         <div class="field">
           <label for="f-end">Ends</label>
-          <input id="f-end" type="time" required />
+          <input id="f-end" name="end_time" type="time" required />
         </div>
       </div>
       <div class="field">
         <label for="f-desc">What's the deal?</label>
-        <textarea id="f-desc" required placeholder="e.g. $5 drafts, $7 well drinks, half-off select appetizers"></textarea>
+        <textarea id="f-desc" name="deal_description" required placeholder="e.g. $5 drafts, $7 well drinks, half-off select appetizers"></textarea>
         <div class="field-hint">Keep it short — this is what shows on the card.</div>
       </div>
       <div class="modal-actions">
@@ -910,28 +915,28 @@
   const SEED_VENUES = [
     {
       id: 'parlor-fulton', name: 'Parlor Pizza Bar', neighborhood: 'West Loop',
-      zip: '60607', address: '108 N Green St', lat: 41.8862, lng: -87.6488,
+      zip: '60607', address: '108 N Green St', lat: 41.8835, lng: -87.6489,
       cuisines: ['Pizza', 'Italian', 'Cocktail bar'],
       deals: [{ type: 'both', days: [1,2,3,4,5], start: '16:00', end: '18:00',
         desc: '$7 small plates, $7 draft beers, $8 wines, $10 cocktails, buy-one-get-one pizzas' }]
     },
     {
       id: 'parlor-wicker', name: 'Parlor Pizza Bar', neighborhood: 'Wicker Park',
-      zip: '60647', address: '1962 N Damen Ave', lat: 41.9173, lng: -87.6777,
+      zip: '60647', address: '1962 N Damen Ave', lat: 41.9175, lng: -87.6777,
       cuisines: ['Pizza', 'Italian', 'Cocktail bar'],
       deals: [{ type: 'both', days: [1,2,3,4,5], start: '17:00', end: '19:00',
         desc: '$7 small plates, $7 draft beers, $8 wines, $10 cocktails, buy-one-get-one pizzas' }]
     },
     {
       id: 'cache310', name: 'Caché 310', neighborhood: 'West Loop',
-      zip: '60606', address: '310 S Canal St', lat: 41.8784, lng: -87.6398,
+      zip: '60606', address: '310 S Canal St', lat: 41.8779, lng: -87.6397,
       cuisines: ['Cocktail bar', 'American'],
       deals: [{ type: 'drinks', days: [1,2,3,4], start: '18:00', end: '20:00',
         desc: '$10 signature cocktails, $5 beers and seltzers' }]
     },
     {
       id: 'cindys', name: "Cindy's Rooftop", neighborhood: 'The Loop',
-      zip: '60603', address: '12 S Michigan Ave', lat: 41.8826, lng: -87.6246,
+      zip: '60603', address: '12 S Michigan Ave', lat: 41.8817, lng: -87.6250,
       cuisines: ['Rooftop', 'American', 'Cocktail bar'],
       deals: [{ type: 'both', days: [1,2,3], start: '16:00', end: '18:00',
         desc: 'Rooftop happy hour overlooking Millennium Park — discounted cocktails and bites' }]
@@ -939,28 +944,28 @@
     // ── West Loop ────────────────────────────────────────────
     {
       id: 'bandit-wl', name: 'Bandit', neighborhood: 'West Loop',
-      zip: '60607', address: '841 W Randolph St', lat: 41.8841, lng: -87.6494,
+      zip: '60607', address: '841 W Randolph St', lat: 41.8841, lng: -87.6491,
       cuisines: ['American', 'Cocktail bar'],
       deals: [{ type: 'both', days: [1,2,3,4,5], start: '16:00', end: '18:00',
         desc: '$8 craft cocktails, $8 bar bites — polished-casual neighborhood bar on Randolph' }]
     },
     {
       id: 'recess-wl', name: 'Recess', neighborhood: 'West Loop',
-      zip: '60642', address: '838 W Kinzie St', lat: 41.8896, lng: -87.6501,
+      zip: '60607', address: '838 W Kinzie St', lat: 41.8892, lng: -87.6496,
       cuisines: ['American', 'Cocktail bar'],
       deals: [{ type: 'both', days: [2,3,4], start: '16:00', end: '18:00',
         desc: '$10 craft cocktails, half-off draft beers, half-off apps, $4 cheeseburger sliders' }]
     },
     {
       id: 'press-room-wl', name: 'The Press Room', neighborhood: 'West Loop',
-      zip: '60607', address: '1134 W Washington Blvd', lat: 41.8830, lng: -87.6584,
+      zip: '60607', address: '1134 W Washington Blvd', lat: 41.8832, lng: -87.6560,
       cuisines: ['Wine bar', 'Cocktail bar', 'Seafood'],
       deals: [{ type: 'both', days: [2,3,4], start: '16:00', end: '18:00',
         desc: '$2 oysters, $8 martinis & old fashioneds, $10 specialty wines, $45 dozen oysters + sparkling bottle' }]
     },
     {
       id: 'asadito-wl', name: 'Asadito', neighborhood: 'West Loop',
-      zip: '60661', address: '30 N Clinton St', lat: 41.8818, lng: -87.6415,
+      zip: '60661', address: '30 N Clinton St', lat: 41.8827, lng: -87.6415,
       cuisines: ['Mexican', 'Tacos', 'Cocktail bar'],
       deals: [{ type: 'both', days: [2,3,4,5], start: '12:00', end: '14:00',
         desc: '$6 house margaritas, $5 tap beers — plus Tequila Tuesdays, Pitcher Wednesdays ($30 pitchers), Thirsty Thursdays ($8 palomas)' }]
@@ -968,7 +973,7 @@
     // ── Fulton Market ─────────────────────────────────────────
     {
       id: 'federales-fm', name: 'Federales', neighborhood: 'Fulton Market',
-      zip: '60607', address: '180 N Morgan St', lat: 41.8862, lng: -87.6517,
+      zip: '60607', address: '180 N Morgan St', lat: 41.8853, lng: -87.6522,
       cuisines: ['Mexican', 'Tacos', 'Cocktail bar'],
       deals: [
         { type: 'both', days: [1,2,3,4,5], start: '16:00', end: '18:00',
@@ -979,21 +984,21 @@
     },
     {
       id: 'beatrix-fm', name: 'Beatrix', neighborhood: 'Fulton Market',
-      zip: '60607', address: '834 W Fulton Market', lat: 41.8867, lng: -87.6495,
+      zip: '60607', address: '834 W Fulton Market', lat: 41.8869, lng: -87.6490,
       cuisines: ['American', 'Cocktail bar'],
       deals: [{ type: 'both', days: [1,2,3,4,5], start: '15:00', end: '18:00',
         desc: '$6 local beers, $7 select wines, $8 hand-crafted cocktails, $9 snacks, $12 prime or mushroom quinoa burger. Half-off wine bottles all day Monday.' }]
     },
     {
       id: 'publican-fm', name: 'The Publican', neighborhood: 'Fulton Market',
-      zip: '60607', address: '837 W Fulton Market', lat: 41.8866, lng: -87.6494,
+      zip: '60607', address: '837 W Fulton Market', lat: 41.8866, lng: -87.6493,
       cuisines: ['Beer-focused', 'American', 'Gastropub', 'Seafood'],
       deals: [{ type: 'both', days: [1,2,3,4,5], start: '16:00', end: '18:00',
         desc: '$2 oysters, $8-$10 beers, $10 wine, $12 martinis, $9 beef fat fries, $8 pork rinds, $10 stuffed chicken wings — classic Fulton Market beer hall' }]
     },
     {
       id: 'ramen-san-fm', name: 'Ramen-san Fulton Market', neighborhood: 'Fulton Market',
-      zip: '60607', address: '941 W Fulton Market', lat: 41.8866, lng: -87.6542,
+      zip: '60607', address: '941 W Fulton Market', lat: 41.8867, lng: -87.6513,
       cuisines: ['Italian', 'Beer-focused'],
       deals: [{ type: 'both', days: [1,2,3,4,5], start: '15:00', end: '18:00',
         desc: '$5 Asahi cold draft, $6 cold dry sake, $7 Penicillin #2 cocktail, $4 fried chicken bun, $5 roasted shishitos, $6 karaage chicken nuggets' }]
@@ -1500,35 +1505,50 @@
       showToast('End time must be after start time');
       return;
     }
-    const nbName = document.getElementById('f-neighborhood').value;
-    const nb = NEIGHBORHOODS.find(n => n.name === nbName);
-    const jitter = () => (Math.random() - 0.5) * 0.006;
+
+    const restaurantName = document.getElementById('f-name').value.trim();
     const cuisines = Array.from(document.getElementById('f-cuisine').selectedOptions).map(o => o.value);
+    const dayLabels = Array.from(selectedDays).map(Number).sort((a,b) => a-b).map(d => DAY_NAMES[d]).join(', ');
+    document.getElementById('f-days-hidden').value = dayLabels;
 
-    const venue = {
-      id: 'u-' + Date.now(),
-      name: document.getElementById('f-name').value.trim(),
-      neighborhood: nbName,
-      zip: document.getElementById('f-zip').value.trim(),
+    // Submissions are emailed for manual review — nothing here touches
+    // the live map. Uses Netlify Forms (the form is statically detected
+    // via data-netlify on the <form> tag); the site owner adds it to the
+    // map by hand after checking it.
+    const form = e.target;
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const original = submitBtn.textContent;
+    submitBtn.textContent = 'Sending…';
+    submitBtn.disabled = true;
+
+    const payload = new URLSearchParams({
+      'form-name': 'add-deal',
+      restaurant_name: restaurantName,
+      neighborhood: document.getElementById('f-neighborhood').value,
       address: document.getElementById('f-address').value.trim(),
-      lat: nb.lat + jitter(),
-      lng: nb.lng + jitter(),
-      cuisines,
-      submittedAt: new Date().toISOString(),
-      deals: [{
-        type: document.getElementById('f-type').value,
-        days: Array.from(selectedDays).map(Number),
-        start, end,
-        desc: document.getElementById('f-desc').value.trim()
-      }]
-    };
+      zip: document.getElementById('f-zip').value.trim(),
+      deal_type: document.getElementById('f-type').value,
+      cuisines: cuisines.join(', '),
+      days: dayLabels,
+      start_time: fmtTime(start),
+      end_time: fmtTime(end),
+      deal_description: document.getElementById('f-desc').value.trim(),
+    });
 
-    // Goes to the pending queue only — NOT the live map. An admin
-    // has to approve it from /admin before anyone else sees it.
-    pendingVenues.push(venue);
-    await saveQueue(PENDING_KEY, pendingVenues);
-    closeModal();
-    showToast(`Thanks! ${venue.name} is in for review.`);
+    try {
+      await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: payload.toString()
+      });
+      closeModal();
+      showToast(`Thanks! We'll review ${restaurantName} and get it added.`);
+    } catch (err) {
+      showToast("Couldn't send — check your connection and try again.");
+    } finally {
+      submitBtn.textContent = original;
+      submitBtn.disabled = false;
+    }
   });
 
   let toastTimer;
