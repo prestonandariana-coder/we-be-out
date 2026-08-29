@@ -909,7 +909,9 @@
   const CUISINES = [
     'American', 'Pizza', 'Mexican', 'Italian', 'Cocktail bar',
     'Sports bar', 'Rooftop', 'Seafood', 'Beer-focused', 'Wine bar',
-    'Tacos', 'Gastropub'
+    'Tacos', 'Gastropub', 'Asian', 'Ramen', 'Tapas', 'Mediterranean',
+    'Steakhouse', 'Japanese', 'Peruvian', 'Chinese', 'Greek',
+    'Korean', 'Puerto Rican', 'Indian'
   ];
 
   const SEED_VENUES = [
@@ -922,7 +924,7 @@
     },
     {
       id: 'parlor-wicker', name: 'Parlor Pizza Bar', neighborhood: 'Wicker Park',
-      zip: '60647', address: '1962 N Damen Ave', lat: 41.9175, lng: -87.6777,
+      zip: '60622', address: '1824 W Division St', lat: 41.9035, lng: -87.6735,
       cuisines: ['Pizza', 'Italian', 'Cocktail bar'],
       deals: [{ type: 'both', days: [1,2,3,4,5], start: '17:00', end: '19:00',
         desc: '$7 small plates, $7 draft beers, $8 wines, $10 cocktails, buy-one-get-one pizzas' }]
@@ -997,11 +999,217 @@
         desc: '$2 oysters, $8-$10 beers, $10 wine, $12 martinis, $9 beef fat fries, $8 pork rinds, $10 stuffed chicken wings — classic Fulton Market beer hall' }]
     },
     {
-      id: 'ramen-san-fm', name: 'Ramen-san Fulton Market', neighborhood: 'Fulton Market',
-      zip: '60607', address: '941 W Fulton Market', lat: 41.8867, lng: -87.6513,
-      cuisines: ['Italian', 'Beer-focused'],
+      id: 'ramen-san-fm', name: 'Ramen-San', neighborhood: 'Fulton Market',
+      zip: '60607', address: '219 N Green St', lat: 41.8863, lng: -87.6485,
+      cuisines: ['Asian', 'Ramen'],
       deals: [{ type: 'both', days: [1,2,3,4,5], start: '15:00', end: '18:00',
-        desc: '$5 Asahi cold draft, $6 cold dry sake, $7 Penicillin #2 cocktail, $4 fried chicken bun, $5 roasted shishitos, $6 karaage chicken nuggets' }]
+        desc: '$4 fried chicken bun, $6 karaage chicken nuggets, $6 chili crunch cucumber, $5 Asahi cold draft, $6 cold dry sake, $7 Penicillin #2' }]
+    },
+    {
+      id: 'carnivale-fm', name: "Carnivale", neighborhood: 'Fulton Market',
+      zip: '60661', address: "702 W Fulton Market", lat: 41.8871, lng: -87.6461,
+      cuisines: ["Mexican", "Cocktail bar"],
+      deals: [{ type: 'drinks', days: [2,3,4,5], start: '16:30', end: '18:30',
+        desc: "$6 to $7 cocktails, discounted sparkling wine, white wine, rose, red wine, $4 to $5 beers" }]
+    },
+    {
+      id: 'boqueria-fm', name: "Boqueria", neighborhood: 'Fulton Market',
+      zip: '60607', address: "807 W Fulton Market", lat: 41.8866, lng: -87.6477,
+      cuisines: ["Mexican", "Tapas"],
+      deals: [
+        { type: 'both', days: [1,2,3,4,5], start: '15:00', end: '18:00',
+          desc: "Discounted bites, $9 select wines, $8 mini martinis, $6 Spanish beer, $8 sangrias, $9 margaritas" },
+        { type: 'both', days: [0,6], start: '16:00', end: '18:00',
+          desc: "Discounted bites, $9 select wines, $8 mini martinis, $6 Spanish beer, $8 sangrias, $9 margaritas" }
+      ]
+    },
+    {
+      id: 'cira-fm', name: "Cira", neighborhood: 'Fulton Market',
+      zip: '60607', address: "200 N Green St", lat: 41.8859, lng: -87.6491,
+      cuisines: ["Mediterranean"],
+      deals: [{ type: 'both', days: [1,2,3,4,5], start: '16:00', end: '18:00',
+        desc: "$7 chips & tzatziki ranch dip, $8 cira hummas, $8 falafel burger, $12 mini cheeseburger, $6 Stella, $10 select wines, $12 select sparkling wines, $12 Grey Goose martini, $12 Angel's Envy manhattan" }]
+    },
+    {
+      id: 'punch-bowl-social-fm', name: "Punch Bowl Social", neighborhood: 'Fulton Market',
+      zip: '60607', address: "310 N Green St", lat: 41.8873, lng: -87.649,
+      cuisines: ["American"],
+      deals: [{ type: 'both', days: [2,3,4,5], start: '15:00', end: '18:30',
+        desc: "Discounted bites and snacks, $5 select cocktails, $6 margaritas and old fashioneds, $5 select wines, $5 select beers" }]
+    },
+    {
+      id: 'costera-cocina-fm', name: "Costera Cocina", neighborhood: 'Fulton Market',
+      zip: '60607', address: "850 W Fulton Market", lat: 41.887, lng: -87.6493,
+      cuisines: ["Mexican"],
+      deals: [{ type: 'both', days: [1,2,3,4,5], start: '16:00', end: '18:00',
+        desc: "$9 select cocktails, $6 rotating beer draft, $5 to $6 small bites, $10 tacos (order of 2)" }]
+    },
+    {
+      id: 'labriola-fm', name: "Labriola", neighborhood: 'Fulton Market',
+      zip: '60607', address: "852 W Fulton Market", lat: 41.887, lng: -87.6496,
+      cuisines: ["Italian"],
+      deals: [{ type: 'both', days: [1,2,3,4], start: '14:00', end: '17:00',
+        desc: "Discounted Cicchetti, $7.95 pizza slices, $10 tini martinis, $25 select wine, $22 filet sliders, $24 Richie burger, $18 fried calamari, $9 parmesan truffle fries" }]
+    },
+    {
+      id: 'lyra-fm', name: "LÝRA", neighborhood: 'Fulton Market',
+      zip: '60607', address: "905 W Fulton Market", lat: 41.8864, lng: -87.6502,
+      cuisines: ["Greek"],
+      deals: [
+        { type: 'both', days: [1,2,3,4,5,6], start: '17:00', end: '18:30',
+          desc: "$7 bites, $9 house wines, $9 cocktails" },
+        { type: 'both', days: [0], start: '00:00', end: '23:59',
+          desc: "$7 bites, $9 house wines, $9 cocktails" }
+      ]
+    },
+    {
+      id: 'fioretta-fm', name: "Fioretta", neighborhood: 'Fulton Market',
+      zip: '60607', address: "318 N Sangamon St", lat: 41.8872, lng: -87.6515,
+      cuisines: ["Steakhouse"],
+      deals: [{ type: 'both', days: [0,1,2,3,4,5,6], start: '17:00', end: '18:30',
+        desc: "$12 classic cocktails, $10 house wines, discounted bar selections, discounted sliders" }]
+    },
+    {
+      id: 'cabra-fm', name: "Cabra", neighborhood: 'Fulton Market',
+      zip: '60607', address: "200 N Green St", lat: 41.8859, lng: -87.6491,
+      cuisines: ["Peruvian"],
+      deals: [
+        { type: 'both', days: [1,2], start: '16:00', end: '18:00',
+          desc: "Discounted dips + snacks, $15 mix & match 2 empanadas, $25 mix & match 4 empanadas, discounted cocktails, beers, and wines" },
+        { type: 'both', days: [3,4,5], start: '15:00', end: '17:00',
+          desc: "Discounted dips + snacks, $15 mix & match 2 empanadas, $25 mix & match 4 empanadas, discounted cocktails, beers, and wines" }
+      ]
+    },
+    {
+      id: 'blvd-steakhouse-fm', name: "BLVD Steakhouse", neighborhood: 'Fulton Market',
+      zip: '60607', address: "817 W Lake St", lat: 41.8855, lng: -87.6482,
+      cuisines: ["Steakhouse"],
+      deals: [
+        { type: 'both', days: [1,2,3,4,5], start: '16:30', end: '18:30',
+          desc: "Discounted snacks and bites, 1/2 priced martinis, $10 featured cocktails,. 1/2 off select wine bottles, $10 select wines" },
+        { type: 'both', days: [0,6], start: '14:00', end: '16:30',
+          desc: "Discounted snacks and bites, 1/2 priced martinis, $10 featured cocktails,. 1/2 off select wine bottles, $10 select wines" }
+      ]
+    },
+    {
+      id: 'adalina-prime-fm', name: "Adalina Prime", neighborhood: 'Fulton Market',
+      zip: '60607', address: "360 N Green St", lat: 41.8887, lng: -87.6493,
+      cuisines: ["Steakhouse"],
+      deals: [{ type: 'both', days: [1,2,3,4,5], start: '16:00', end: '18:00',
+        desc: "$9 libations, $9 martinis, discounted snacks" }]
+    },
+    {
+      id: 'gaijin-fm', name: "Gaijin", neighborhood: 'Fulton Market',
+      zip: '60607', address: "950 W Lake St", lat: 41.8858, lng: -87.6516,
+      cuisines: ["Japanese"],
+      deals: [{ type: 'both', days: [2,3,4], start: '17:00', end: '18:00',
+        desc: "$5 selected highballs, sake, wine, draft beer, starters and share plates" }]
+    },
+    {
+      id: 'estereo-fm', name: "Estereo", neighborhood: 'Fulton Market',
+      zip: '60607', address: "1001 W Fulton Market", lat: 41.8866, lng: -87.6523,
+      cuisines: ["Cocktail bar"],
+      deals: [{ type: 'drinks', days: [1,2,3,4,5], start: '15:00', end: '18:00',
+        desc: "$10 paloma, frozen, breezy and medalla, $10 mezcal and tequila shots" }]
+    },
+    {
+      id: 'la-josie-wl', name: "La Josie", neighborhood: 'West Loop',
+      zip: '60661', address: "740 W Randolph St", lat: 41.8846, lng: -87.6473,
+      cuisines: ["Mexican", "Tacos"],
+      deals: [{ type: 'food', days: [2], start: '18:00', end: '22:00',
+        desc: "Taco Tuesday: $14 two taco pairings, $4 sides" }]
+    },
+    {
+      id: 'bar-siena-wl', name: "Bar Siena", neighborhood: 'West Loop',
+      zip: '60607', address: "832 W Randolph St", lat: 41.8847, lng: -87.6487,
+      cuisines: ["Italian"],
+      deals: [{ type: 'both', days: [1,2,3,4,5], start: '15:30', end: '17:30',
+        desc: "$9 cocktails, $10 select wines, discounted antipasti, $4 sliders, $12 pizzas" }]
+    },
+    {
+      id: 'the-oakville-grill-cellar-wl', name: "The Oakville Grill & Cellar", neighborhood: 'West Loop',
+      zip: '60607', address: "163 N Green St", lat: 41.8841, lng: -87.6485,
+      cuisines: ["American", "Cocktail bar"],
+      deals: [{ type: 'both', days: [1,2,3,4,5], start: '16:00', end: '18:00',
+        desc: "Discounted snacks, $6 select glasses of wine, $7 margaritas, $8 spritzs, $9 martinis, $6 seasonal craft beers" }]
+    },
+    {
+      id: 'hide-seek-wl', name: "Hide + Seek", neighborhood: 'West Loop',
+      zip: '60607', address: "838 W Randolph St", lat: 41.8846, lng: -87.6489,
+      cuisines: ["American", "Cocktail bar"],
+      deals: [
+        { type: 'both', days: [0,1,2,3,4,6], start: '16:00', end: '18:00',
+          desc: "Discounted snacks and food, $10 negronis, French 75s, mules, and margaritas, $12 Aperol spritzs, martinis, old fashioneds, and manhattans, $6 select beers, $10 select wines" },
+        { type: 'both', days: [5], start: '15:00', end: '18:00',
+          desc: "Discounted snacks and food, $10 negronis, French 75s, mules, and margaritas, $12 Aperol spritzs, martinis, old fashioneds, and manhattans, $6 select beers, $10 select wines" }
+      ]
+    },
+    {
+      id: 'kama-wl', name: "Kama", neighborhood: 'West Loop',
+      zip: '60607', address: "812 W Randolph St", lat: 41.8847, lng: -87.6481,
+      cuisines: ["Indian"],
+      deals: [{ type: 'both', days: [1,2,3,4,5], start: '16:00', end: '17:30',
+        desc: "$10 small bites, $10 cocktails, $8 wines, $4 beers" }]
+    },
+    {
+      id: 'rooftop-at-nobu-wl', name: "Rooftop at Nobu", neighborhood: 'West Loop',
+      zip: '60607', address: "155 N Peoria St, 11th Floor", lat: 41.8838, lng: -87.6499,
+      cuisines: ["Japanese"],
+      deals: [{ type: 'both', days: [1,2,3,4,5], start: '15:00', end: '18:00',
+        desc: "Discounted Shuko, bar bites, and Maki, $10 select wines, $5 draft beers, $15 specialty cocktails" }]
+    },
+    {
+      id: 'lena-brava-wl', name: "Leña Brava", neighborhood: 'West Loop',
+      zip: '60607', address: "900 W Randolph St", lat: 41.8846, lng: -87.65,
+      cuisines: ["Mexican"],
+      deals: [{ type: 'both', days: [1,2,3,4,5], start: '15:00', end: '17:00',
+        desc: "Discounted select drinks and wines, discounted dips and bites, $17 shaken cocktails, $18 stirred cocktails" }]
+    },
+    {
+      id: 'koi-noodles-wl', name: "Koi Noodles", neighborhood: 'West Loop',
+      zip: '60607', address: "163 N Sangamon St", lat: 41.8836, lng: -87.6508,
+      cuisines: ["Chinese"],
+      deals: [
+        { type: 'both', days: [1,2,3,4,5], start: '16:00', end: '19:00',
+          desc: "$9 select drinks, $5 select beers, 2-for-1 Sake and Soju, discounted bites" },
+        { type: 'both', days: [6], start: '16:00', end: '18:00',
+          desc: "$9 select drinks, $5 select beers, 2-for-1 Sake and Soju, discounted bites" }
+      ]
+    },
+    {
+      id: 'cruz-blanca-wl', name: "Cruz Blanca", neighborhood: 'West Loop',
+      zip: '60607', address: "904 W Randolph St", lat: 41.8846, lng: -87.6501,
+      cuisines: ["Mexican"],
+      deals: [{ type: 'both', days: [1,2,3,4,5], start: '15:00', end: '17:00',
+        desc: "$5 Mexico Calling's, $10 Chelagave Handshake's, $3 Brewer's Draft, $10 margaritas, $12 Oaxacan old fashioneds, $8 agave shots, $2 chilled oysters, $3 carnitas tacos, $5 French fries, $10 burgers, $10 Cruz nachos" }]
+    },
+    {
+      id: 'fora-fm', name: "Fora", neighborhood: 'Fulton Market',
+      zip: '60607', address: "311 N Morgan St", lat: 41.8875, lng: -87.6518,
+      cuisines: ["Italian"],
+      deals: [{ type: 'both', days: [1,2,3,4,5], start: '15:00', end: '18:00',
+        desc: "Discounted cocktails, $5 select beers, $8 house wines, discounted sharables" }]
+    },
+    {
+      id: 'urbanbelly-fm', name: "Urbanbelly", neighborhood: 'Fulton Market',
+      zip: '60607', address: "954 W Fulton St", lat: 41.8871, lng: -87.652,
+      cuisines: ["Korean", "Puerto Rican"],
+      deals: [{ type: 'both', days: [0,3,4,5,6], start: '16:00', end: '18:00',
+        desc: "$5 beers, $6 wines, $9 cocktails, discounted bites" }]
+    },
+    {
+      id: 'swift-sons-fm', name: "Swift & Sons", neighborhood: 'Fulton Market',
+      zip: '60607', address: "1000 W Fulton Market", lat: 41.8873, lng: -87.6526,
+      cuisines: ["Steakhouse"],
+      deals: [{ type: 'both', days: [0,1,2,3,4,5,6], start: '16:30', end: '18:00',
+        desc: "Discounted food, $10 whiskey cocktails, discounted bistro bottles" }]
+    },
+    {
+      id: 'the-vig-west-loop-fm', name: "The VIG West Loop", neighborhood: 'Fulton Market',
+      zip: '60607', address: "312 N Carpenter St", lat: 41.8875, lng: -87.6537,
+      cuisines: ["Cocktail bar"],
+      deals: [{ type: 'both', days: [1,2,3,4,5], start: '16:00', end: '19:00',
+        desc: "Discounted food items, $25 girl dinner, $10 cocktails, $8 wines, $6 beers" }]
     },
   ];
 
