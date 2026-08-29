@@ -395,6 +395,12 @@
   @media (prefers-reduced-motion: reduce){
     .pin.live::after, .stop-dot.live::after{animation:none;}
   }
+  .pin-tooltip{
+    background:rgba(29,29,31,.92); backdrop-filter:blur(6px); color:#fff; border:none;
+    border-radius:var(--radius-pill); padding:6px 12px; font-family:var(--font-display);
+    font-weight:700; font-size:.8rem; box-shadow:var(--shadow-md);
+  }
+  .pin-tooltip::before{display:none;}
   .leaflet-popup-content{font-family:var(--font-body); font-size:.9rem; line-height:1.5; font-weight:500;}
   .leaflet-popup-content b{font-family:var(--font-display); font-weight:800;}
   .leaflet-popup-content-wrapper{border-radius:16px; box-shadow:var(--shadow-lg);}
@@ -1307,6 +1313,7 @@
     markersById = {};
     visible.forEach(({ v, status }) => {
       const marker = L.marker([v.lat, v.lng], { icon: pinIcon(status.state) });
+      marker.bindTooltip(v.name, { direction: 'top', offset: [0, -6], className: 'pin-tooltip' });
       marker.on('click', () => selectVenue(v.id));
       marker.addTo(markersLayer);
       markersById[v.id] = marker;
