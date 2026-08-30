@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /nrbackoffice2026
+
+Sitemap: https://webeout.app/sitemap.xml
