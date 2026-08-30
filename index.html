@@ -565,6 +565,9 @@
     <button class="nav-link" data-route="map">Map</button>
   </div>
   <div class="nav-item">
+    <button class="nav-link" data-route="guides">Guides</button>
+  </div>
+  <div class="nav-item">
     <button class="nav-link" data-route="contact">Contact</button>
   </div>
 </nav>
@@ -606,6 +609,89 @@
   </main>
 
   <button class="add-btn" id="openAdd">+ Add a Deal</button>
+</section>
+
+<!-- ========== GUIDES INDEX PAGE ========== -->
+<section class="page" id="page-guides">
+  <div class="page-head">
+    <h1>Chicago happy hour guides</h1>
+    <p>Neighborhood-by-neighborhood breakdowns of where to go and when.</p>
+  </div>
+  <div class="blog-grid">
+    <article class="blog-card" tabindex="0" data-route="ultimate-chicago-happy-hour-guide">
+      <div style="background:linear-gradient(135deg, #FF2D78, #FF8A00); height:160px;"></div>
+      <div class="blog-card-body">
+        <div class="blog-tag">Citywide</div>
+        <h3>The Ultimate Chicago Happy Hour Guide</h3>
+        <p>Coming soon — our full roundup of the best happy hours across the city.</p>
+      </div>
+    </article>
+    <article class="blog-card" tabindex="0" data-route="fulton-market-happy-hour-guide">
+      <div style="background:linear-gradient(135deg, #0A84FF, #AF52DE); height:160px;"></div>
+      <div class="blog-card-body">
+        <div class="blog-tag">Neighborhood guide</div>
+        <h3>Fulton Market Happy Hour Guide</h3>
+        <p>Coming soon — where to go for happy hour in Fulton Market.</p>
+      </div>
+    </article>
+    <article class="blog-card" tabindex="0" data-route="west-loop-happy-hour-guide">
+      <div style="background:linear-gradient(135deg, #28C76F, #FFD60A); height:160px;"></div>
+      <div class="blog-card-body">
+        <div class="blog-tag">Neighborhood guide</div>
+        <h3>West Loop Happy Hour Guide</h3>
+        <p>Coming soon — where to go for happy hour in West Loop.</p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ========== INDIVIDUAL GUIDE PAGES ==========
+     Placeholders for now — real content gets written in later. Each
+     one's just a plain page like Privacy/Disclaimer until then.
+     ========================================================== -->
+<section class="page" id="page-ultimate-chicago-happy-hour-guide">
+  <div class="page-head">
+    <h1>The Ultimate Chicago Happy Hour Guide</h1>
+    <p>Citywide guide</p>
+  </div>
+  <div class="contact-wrap">
+    <div style="background:#fff; border-radius:var(--radius-md); padding:24px 28px; box-shadow:var(--shadow-sm);">
+      <p style="line-height:1.7; color:#3C3C43; font-size:.95rem; margin:0 0 16px;">
+        This guide is coming soon — check back shortly, or use the map in the meantime to find what's live right now.
+      </p>
+      <a data-route="guides" style="color:var(--blue); font-weight:700; font-size:.9rem;">&larr; Back to Guides</a>
+    </div>
+  </div>
+</section>
+
+<section class="page" id="page-fulton-market-happy-hour-guide">
+  <div class="page-head">
+    <h1>Fulton Market Happy Hour Guide</h1>
+    <p>Neighborhood guide</p>
+  </div>
+  <div class="contact-wrap">
+    <div style="background:#fff; border-radius:var(--radius-md); padding:24px 28px; box-shadow:var(--shadow-sm);">
+      <p style="line-height:1.7; color:#3C3C43; font-size:.95rem; margin:0 0 16px;">
+        This guide is coming soon — check back shortly, or use the map in the meantime to find what's live right now.
+      </p>
+      <a data-route="guides" style="color:var(--blue); font-weight:700; font-size:.9rem;">&larr; Back to Guides</a>
+    </div>
+  </div>
+</section>
+
+<section class="page" id="page-west-loop-happy-hour-guide">
+  <div class="page-head">
+    <h1>West Loop Happy Hour Guide</h1>
+    <p>Neighborhood guide</p>
+  </div>
+  <div class="contact-wrap">
+    <div style="background:#fff; border-radius:var(--radius-md); padding:24px 28px; box-shadow:var(--shadow-sm);">
+      <p style="line-height:1.7; color:#3C3C43; font-size:.95rem; margin:0 0 16px;">
+        This guide is coming soon — check back shortly, or use the map in the meantime to find what's live right now.
+      </p>
+      <a data-route="guides" style="color:var(--blue); font-weight:700; font-size:.9rem;">&larr; Back to Guides</a>
+    </div>
+  </div>
 </section>
 
 <!-- ========== BLOG PAGE ========== -->
@@ -857,6 +943,7 @@
     <div class="footer-col">
       <h4>Explore</h4>
       <a data-route="map">Map</a>
+      <a data-route="guides">Guides</a>
       <a data-route="contact">Contact</a>
     </div>
     <div class="footer-col">
@@ -1777,7 +1864,10 @@
      _redirects) so a direct visit/refresh on e.g. /contact still
      serves this file instead of 404ing.
      ========================================================= */
-  const VALID_ROUTES = ['map','contact','privacy','disclaimer','nrbackoffice2026'];
+  const VALID_ROUTES = [
+    'map','guides','contact','privacy','disclaimer','nrbackoffice2026',
+    'ultimate-chicago-happy-hour-guide','fulton-market-happy-hour-guide','west-loop-happy-hour-guide'
+  ];
 
   function goToRoute(route){
     const finalRoute = VALID_ROUTES.includes(route) ? route : 'map';
@@ -1820,6 +1910,12 @@
     el.addEventListener('click', (e) => {
       e.preventDefault();
       goToRoute(el.dataset.route);
+    });
+    el.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' '){
+        e.preventDefault();
+        goToRoute(el.dataset.route);
+      }
     });
   });
 
